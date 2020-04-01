@@ -29,32 +29,42 @@ mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint
     }
 
     /* malloc memory for characteristic descriptors */
-    svc->mCharCount = charCount;
-    svc->mChars = (mrt_gatt_char_t*)malloc(sizeof(mrt_gatt_char_t) * charCount);
+    svc->mCharCount = 0;
+    svc->mMaxCharCount = charCount;
+    svc->mChars = (mrt_gatt_char_t**)malloc(sizeof(mrt_gatt_char_t*) * charCount);
     svc->cbEvent = cbEvent;
     
 
     return MRT_STATUS_OK;
 }
 
-mrt_status_t gatt_init_char(mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent  )
+mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent  )
 {
-
-    /* Set UUID */
-    chr->mUuid.mType = uuidType;
-    if(uuidType == e16Bit)
-    {   
-        memcpy((uint8_t*)&chr->mUuid.m16Bit, arrUuid, 2);
-    }
-    else
+    if(svc->mCharCount < svc->mMaxCharCount)
     {
-        memcpy((uint8_t*)&chr->mUuid.m128Bit, arrUuid, 16);
+        /* Set UUID */
+        chr->mUuid.mType = uuidType;
+        if(uuidType == e16Bit)
+        {   
+            memcpy((uint8_t*)&chr->mUuid.m16Bit, arrUuid, 2);
+        }
+        else
+        {
+            memcpy((uint8_t*)&chr->mUuid.m128Bit, arrUuid, 16);
+        }
+
+        chr->mSize = size;
+        chr->mProps = props;
+        chr->cbEvent = cbEvent;
+        chr->mNotificationsEnable = false;
+        chr->mSvc = svc;
+        svc->mChars[svc->mCharCount++] = chr;   /*Add ptr to list for looping through*/
+    }
+    else 
+    {
+        return MRT_STATUS_ERROR; //tried to add more characteristics than max
     }
 
-    chr->mSize = size;
-    chr->mProps = props;
-    chr->cbEvent = cbEvent;
-    chr->mNotificationsEnable = false;
 
     return MRT_STATUS_OK;
 }

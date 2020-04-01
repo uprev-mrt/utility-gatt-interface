@@ -82,6 +82,7 @@ struct mrt_gatt_char_t{
     mrt_gatt_chr_handle_t mHandle;      //Handle of Characteristic
     uint8_t mProps;                 //Permissions of characteristic
     bool mNotificationsEnable;      //Indicates if Notifications are enabled in CCCD
+    mrt_gatt_svc_t* mSvc;
     mrt_gatt_char_callback cbEvent; //characteristic event callback
 };
 
@@ -89,8 +90,9 @@ struct mrt_gatt_char_t{
 struct mrt_gatt_svc_t{
     mrt_gatt_uuid_t mUuid;          //UUID of Service
     mrt_gatt_svc_handle_t  mHandle;
-    mrt_gatt_char_t* mChars;         //Array of characteristics   
+    mrt_gatt_char_t** mChars;         //Array of characteristics   
     uint16_t mCharCount;            //Number of characterestics
+    uint16_t mMaxCharCount;          //max number of characteristics
     mrt_gatt_svc_callback cbEvent;   //Service event callback
 };
 
@@ -98,7 +100,7 @@ struct mrt_gatt_svc_t{
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent);
-mrt_status_t gatt_init_char(mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent );
+mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent );
 
 
 #ifdef __cplusplus

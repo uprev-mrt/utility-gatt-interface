@@ -40,7 +40,7 @@ typedef enum{
 }uuid_type_e;
 
 typedef enum{
-    GATT_EVT_CHAR_NONE     = 0x00,
+    GATT_EVT_NONE     = 0x00,
     GATT_EVT_CHAR_WRITE    = 0x01,
     GATT_EVT_CHAR_READ     = 0x02,
     GATT_EVT_NOTIFY_ENABLE = 0x04,
@@ -79,7 +79,7 @@ typedef mrt_status_t (*mrt_gatt_char_callback)(mrt_gatt_evt_t* event);
 struct mrt_gatt_char_t{
     mrt_gatt_uuid_t mUuid;          //UUID of Characteristic
     uint16_t mSize;                 //size of Characteristic
-    mrt_gatt_chr_handle_t mHandle;      //Handle of Characteristic
+    uint16_t mHandle; //Handle of Characteristic
     uint8_t mProps;                 //Permissions of characteristic
     bool mNotificationsEnable;      //Indicates if Notifications are enabled in CCCD
     mrt_gatt_svc_t* mSvc;
@@ -89,7 +89,7 @@ struct mrt_gatt_char_t{
 /* gatt Service descriptor */
 struct mrt_gatt_svc_t{
     mrt_gatt_uuid_t mUuid;          //UUID of Service
-    mrt_gatt_svc_handle_t  mHandle;
+    uint16_t  mHandle;
     mrt_gatt_char_t** mChars;         //Array of characteristics   
     uint16_t mCharCount;            //Number of characterestics
     uint16_t mMaxCharCount;          //max number of characteristics
@@ -97,8 +97,8 @@ struct mrt_gatt_svc_t{
 };
 
 /* Exported constants --------------------------------------------------------*/
-#ifndef MRT_GATT_SVC_ATTR   /*Some platforms use pre-proccessor directives to place service data in memory sections*/
-#define MRT_GATT_SVC_ATTR 
+#ifndef MRT_GATT_DATA_ATTR   /*Some platforms use pre-proccessor directives to place service data in memory sections*/
+#define MRT_GATT_DATA_ATTR 
 #endif
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */

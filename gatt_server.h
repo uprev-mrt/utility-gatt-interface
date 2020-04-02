@@ -97,6 +97,9 @@ struct mrt_gatt_svc_t{
 };
 
 /* Exported constants --------------------------------------------------------*/
+#ifndef MRT_GATT_SVC_ATTR   /*Some platforms use pre-proccessor directives to place service data in memory sections*/
+#define MRT_GATT_SVC_ATTR 
+#endif
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
 mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent);

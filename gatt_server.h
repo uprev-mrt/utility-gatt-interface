@@ -40,11 +40,11 @@ typedef enum{
 }uuid_type_e;
 
 typedef enum{
-    GATT_EVT_NONE     = 0x00,
-    GATT_EVT_CHAR_WRITE    = 0x01,
-    GATT_EVT_CHAR_READ     = 0x02,
-    GATT_EVT_NOTIFY_ENABLE = 0x04,
-    GATT_EVT_NOTIFY_DISABLE = 0x08
+    GATT_EVT_NONE           = 0x00, /* None/unknown */     
+    GATT_EVT_VALUE_WRITE    = 0x01, /* Value is being written */
+    GATT_EVT_VALUE_READ     = 0x02, /* Value is being read */
+    GATT_EVT_DESCR_WRITE    = 0x03, /* Descriptor is being written (ususally to enable notifications)*/
+    GATT_EVT_DESCR_READ    = 0x04  /* Descriptor is  being read*/
 }mrt_gatt_evt_type_e;
 
 /* UUID struct */
@@ -79,7 +79,7 @@ typedef mrt_status_t (*mrt_gatt_char_callback)(mrt_gatt_evt_t* event);
 struct mrt_gatt_char_t{
     mrt_gatt_uuid_t mUuid;          //UUID of Characteristic
     uint16_t mSize;                 //size of Characteristic
-    uint16_t mHandle; //Handle of Characteristic
+    uint16_t mHandle;               //Handle of Characteristic
     uint8_t mProps;                 //Permissions of characteristic
     bool mNotificationsEnable;      //Indicates if Notifications are enabled in CCCD
     mrt_gatt_svc_t* mSvc;
@@ -89,11 +89,11 @@ struct mrt_gatt_char_t{
 /* gatt Service descriptor */
 struct mrt_gatt_svc_t{
     mrt_gatt_uuid_t mUuid;          //UUID of Service
-    uint16_t  mHandle;
-    mrt_gatt_char_t** mChars;         //Array of characteristics   
+    uint16_t  mHandle;              //Handle
+    mrt_gatt_char_t** mChars;       //Array of characteristics   
     uint16_t mCharCount;            //Number of characterestics
-    uint16_t mMaxCharCount;          //max number of characteristics
-    mrt_gatt_svc_callback cbEvent;   //Service event callback
+    uint16_t mMaxCharCount;         //max number of characteristics
+    mrt_gatt_svc_callback cbEvent;  //Service event callback
 };
 
 /* Exported constants --------------------------------------------------------*/
@@ -102,7 +102,27 @@ struct mrt_gatt_svc_t{
 #endif
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions ------------------------------------------------------- */
+
+/**
+ * @brief Initialize service struct
+ * @param svc - ptr to struct
+ * @param uuidType - uuid type (e16Bit or e128Bit)
+ * @param arrUuid - array of bytes representing UUID
+ * @param charCount - number of characteristics in service 
+ * @param cbEvent - callback event (unused for now)
+ */
 mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent);
+
+/**
+ * @brief Initializes a characteristic and adds it to a service
+ * @param svc - ptr to service
+ * @param chr - ptr to characteristic
+ * @param uuidType - uuid type (e16Bit or e128Bit)
+ * @param arrUuid - array of bytes representing UUID
+ * @param size - size of data in bytes
+ * @param props - properties (READ,WRITE,NOTIFY etc)
+ * @param cbEvent - callback handler for gatt event 
+ */
 mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent );
 
 

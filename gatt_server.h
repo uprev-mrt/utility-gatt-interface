@@ -138,6 +138,13 @@ mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint
  */
 mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t size, uint8_t props, mrt_gatt_char_callback cbEvent );
 
+/**
+ * @brief Sets the default security flags for intializing characteristics  
+ * @param securityFlags new default flags
+ * @return mrt_status_t 
+ * @note must be called before initializing characteristics
+ */
+mrt_status_t gatt_set_default_security(uint8_t securityFlags);
 
 #ifdef __cplusplus
 }

@@ -14,6 +14,8 @@
 #include <string.h>
 #include "gatt_server.h"
 
+uint8_t default_security = MRT_GATT_SECURITY_NONE;    //Default to no security
+
 
 mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent)
 {
@@ -55,7 +57,7 @@ mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type
         }
 
         chr->mSize = size;
-        chr->mSecurity = MRT_GATT_SECURITY_NONE;    //Default to no security
+        chr->mSecurity = default_security;    //use default
         chr->mProps = props;
         chr->cbEvent = cbEvent;
         chr->mNotificationsEnable = false;
@@ -67,6 +69,13 @@ mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type
         return MRT_STATUS_ERROR; //tried to add more characteristics than max
     }
 
+
+    return MRT_STATUS_OK;
+}
+
+mrt_status_t gatt_set_default_security(uint8_t securityFlags)
+{
+    default_security = securityFlags;
 
     return MRT_STATUS_OK;
 }

@@ -25,6 +25,17 @@ extern "C"
 #define MRT_GATT_PROP_SIGNED_WRITE                   0x40
 #define MRT_GATT_PROP_EXT                            0x80
 
+/* Security permissions for a characteristic.
+ */
+#define MRT_GATT_SECURITY_NONE          0x00 /* No security. */
+#define MRT_GATT_SECURITY_AUTHEN_READ   0x01 /* Need authentication to read */
+#define MRT_GATT_SECURITY_AUTHOR_READ   0x02 /* Need authorization to read */
+#define MRT_GATT_SECURITY_ENCRY_READ    0x04 /* Need encryption to read */
+#define MRT_GATT_SECURITY_AUTHEN_WRITE  0x08 /* Need authentication to write */
+#define MRT_GATT_SECURITY_AUTHOR_WRITE  0x10 /* Need authorization to write */
+#define MRT_GATT_SECURITY_ENCRY_WRITE   0x20 /* Need encryption to write */
+
+
 /* Includes ------------------------------------------------------------------*/
 #define MRT_GATT_MODULE_ENABLED
 #include "Platforms/Common/mrt_platform.h"
@@ -81,6 +92,7 @@ struct mrt_gatt_char_t{
     uint16_t mSize;                 //size of Characteristic
     uint16_t mHandle;               //Handle of Characteristic
     uint8_t mProps;                 //Permissions of characteristic
+    uint8_t mSecurity;              //Security flags for characteristic
     bool mNotificationsEnable;      //Indicates if Notifications are enabled in CCCD
     mrt_gatt_svc_t* mSvc;
     mrt_gatt_char_callback cbEvent; //characteristic event callback
@@ -93,6 +105,7 @@ struct mrt_gatt_svc_t{
     mrt_gatt_char_t** mChars;       //Array of characteristics   
     uint16_t mCharCount;            //Number of characterestics
     uint16_t mMaxCharCount;         //max number of characteristics
+    uint8_t mSecurity;              //Security flags for service, if set this will override characteristic level security flags
     mrt_gatt_svc_callback cbEvent;  //Service event callback
 };
 

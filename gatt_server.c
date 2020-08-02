@@ -62,6 +62,8 @@ mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type
         chr->cbEvent = cbEvent;
         chr->mNotificationsEnable = false;
         chr->mSvc = svc;
+        chr->mCache.mData = (uint8_t*)malloc(size);
+        chr->mCache.mLen = 0;
         svc->mChars[svc->mCharCount++] = chr;   /*Add ptr to list for looping through*/
     }
     else 

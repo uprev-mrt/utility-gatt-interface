@@ -94,6 +94,10 @@ struct mrt_gatt_char_t{
     uint8_t mProps;                 //Permissions of characteristic
     uint8_t mSecurity;              //Security flags for characteristic
     bool mNotificationsEnable;      //Indicates if Notifications are enabled in CCCD
+    struct{
+        uint8_t* mData;              // Cached data
+        uint8_t mLen;                    // len of last cached data (data invalid if 0)
+    }mCache;
     mrt_gatt_svc_t* mSvc;
     mrt_gatt_char_callback cbEvent; //characteristic event callback
 };

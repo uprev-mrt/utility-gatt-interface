@@ -37,8 +37,18 @@ extern "C"
 
 
 /* Includes ------------------------------------------------------------------*/
-#define MRT_GATT_MODULE_ENABLED
-#include "Platforms/Common/mrt_platform.h"
+#include <stdint.h>
+
+//Provide option to not use MrT Platform abstraction.
+#ifdef MRT_PLATFORM
+    #define MRT_GATT_MODULE_ENABLED
+    #include "Platforms/Common/mrt_platform.h"
+#else 
+    typedef uint32_t mrt_status_t;
+    #define MRT_STATUS_OK 0
+    #define MRT_STATUS_ERROR 1
+#endif
+
 
 
 /* Exported types ------------------------------------------------------------*/
@@ -149,6 +159,8 @@ mrt_status_t gatt_init_char(mrt_gatt_svc_t* svc, mrt_gatt_char_t* chr, uuid_type
  * @note must be called before initializing characteristics
  */
 mrt_status_t gatt_set_default_security(uint8_t securityFlags);
+
+
 
 #ifdef __cplusplus
 }

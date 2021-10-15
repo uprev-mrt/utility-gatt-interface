@@ -14,7 +14,12 @@
 #include <string.h>
 #include "gatt_server.h"
 
+/* Private Variables ---------------------------------------------------------*/
 uint8_t default_security = MRT_GATT_SECURITY_NONE;    //Default to no security
+
+/* Private Functions ---------------------------------------------------------*/
+
+/* Exported Functions --------------------------------------------------------*/
 
 
 mrt_status_t gatt_init_svc(mrt_gatt_svc_t* svc, uuid_type_e uuidType, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent)

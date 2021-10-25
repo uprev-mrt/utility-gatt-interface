@@ -10,8 +10,6 @@
 
 
 /* Includes ------------------------------------------------------------------*/
-#include <stdlib.h>
-#include <string.h>
 #include "mrt_gatt_interface.h"
 
 /* Private Variables ---------------------------------------------------------*/

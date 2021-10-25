@@ -21,6 +21,8 @@ extern "C"
 #include <stddef.h>
 #include <stdint.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 // This allows the interface to be used outside of the MRT framework
 #ifdef MRT_PLATFORM

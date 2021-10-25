@@ -281,7 +281,14 @@ mrt_gatt_svc_t* mrt_gatt_lookup_svc_handle(mrt_gatt_pro_t* pro, uint16_t handle)
  */
 mrt_gatt_char_t* mrt_gatt_lookup_char_handle(mrt_gatt_pro_t* pro, mrt_gatt_svc_t* svc, uint16_t handle);
 
-
+/**
+ * @brief Break up data into multiple notify packets for emulating serial over BLE
+ * @param chr ptr to char
+ * @param data data to update with
+ * @param len length of data in bytes
+ * @return mrt_status_t 
+ */
+mrt_status_t mrt_gatt_serial_notify(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len);
 
 /* Deinit Functions ------------------------------------------------------- */
 
@@ -294,7 +301,6 @@ void mrt_gatt_deinit_pro(mrt_gatt_pro_t* pro);
 void mrt_gatt_deinit_svc(mrt_gatt_svc_t* svc);
 void mrt_gatt_deinit_chr(mrt_gatt_char_t* chr);
 
-
 /* Weak Functions -------------------------------------------------------- */
 
 
@@ -305,16 +311,23 @@ void mrt_gatt_deinit_chr(mrt_gatt_char_t* chr);
  * @param len length of data in bytes
  * @return mrt_status_t 
  */
-mrt_status_t mrt_gatt_update_char_val(mrt_gatt_char_t* chr, uint8_t* data, int len);
+mrt_status_t mrt_gatt_update_char_val(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len);
 
 /**
- * @brief Gets the characteristic and updates the local cache (chr->cache.data) from the actual data on the device
+ * @brief Sends an indication/notification of the event
+ * @param chr ptr to char
+ * @param data data to update with
+ * @param len length of data in bytes
+ * @return mrt_status_t 
+ */
+mrt_status_t mrt_gatt_notify_char_val(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len);
+
+/**
+ * @brief Updates the character value from the database/api
  * @param chr ptr to char
  * @return status
  */
 mrt_status_t mrt_gatt_get_char_val(mrt_gatt_char_t* chr);
-
-
 
 #ifdef __cplusplus
 }

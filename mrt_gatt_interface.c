@@ -217,6 +217,32 @@ mrt_gatt_char_t* mrt_gatt_lookup_char_handle(mrt_gatt_pro_t* pro, mrt_gatt_svc_t
     return NULL;
 }
 
+mrt_status_t mrt_gatt_serial_notify(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len)
+{
+  uint16_t idx = 0;
+  uint16_t remaining = len;
+  uint16_t this_len = remaining;
+
+  while( remaining > 0)
+  {
+    if(remaining > chr->size)
+    {
+      this_len = chr->size;
+    }
+    else
+    {
+      this_len = remaining;
+    }
+
+    mrt_gatt_notify_char_val(chr, &data[idx], this_len);
+
+    remaining -= this_len;
+    idx+= this_len;
+  }
+
+  return MRT_STATUS_OK;
+}
+
 /* Deinit Functions ------------------------------------------------------- */
 
 /**
@@ -244,10 +270,9 @@ void mrt_gatt_deinit_chr(mrt_gatt_char_t* chr)
 #ifndef MRT_NO_WEAK //Some platforms do not support weakly typed functions
 
 /**
- * @brief This weakly defined function just updates the cache.
- *        Each platform will override this with its own function
+ * @brief Each platform/adapter will override this with its own function
  */
-__attribute__((weak)) mrt_status_t mrt_gatt_set_char_val(mrt_gatt_char_t* chr, uint8_t* val, uint16_t len)
+__attribute__((weak)) mrt_status_t mrt_gatt_update_char_val(mrt_gatt_char_t* chr, uint8_t* val, uint16_t len)
 {
     if(len > chr->size)
     {
@@ -257,18 +282,23 @@ __attribute__((weak)) mrt_status_t mrt_gatt_set_char_val(mrt_gatt_char_t* chr, u
     memcpy(chr->data.value, val, len);
     chr->data.len = len;
 
-    return MRT_STATUS_OK;
+    return MRT_STATUS_NOT_IMPLEMENTED;
 }
 
 /**
- * @brief This weakly defined function just reads the cache.
- *        Each platform will override this with its own function
+ * @brief Each platform/adapter will override this with its own function
+ */
+__attribute__((weak)) mrt_status_t mrt_gatt_notify_char_val(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len)
+{
+    return MRT_STATUS_NOT_IMPLEMENTED;
+}
+
+/**
+ * @brief Each platform/adapter will override this with its own function
  */
 __attribute__((weak)) mrt_status_t mrt_gatt_get_char_val(mrt_gatt_char_t* chr)
 {
-
-
-    return MRT_STATUS_OK;
+    return MRT_STATUS_NOT_IMPLEMENTED;
 }
 
 

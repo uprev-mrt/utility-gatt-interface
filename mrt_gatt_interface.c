@@ -267,11 +267,10 @@ void mrt_gatt_deinit_chr(mrt_gatt_char_t* chr)
 
 #ifndef MRT_NO_WEAK //Some platforms do not support weakly typed functions
 
-/**
- * @brief Each platform/adapter will override this with its own function
- */
+
 __attribute__((weak)) mrt_status_t mrt_gatt_update_char_val(mrt_gatt_char_t* chr, uint8_t* val, uint16_t len)
 {
+    //The platform adapter must override this function
     if(len > chr->size)
     {
         return MRT_STATUS_ERROR;
@@ -283,11 +282,10 @@ __attribute__((weak)) mrt_status_t mrt_gatt_update_char_val(mrt_gatt_char_t* chr
     return MRT_STATUS_NOT_IMPLEMENTED;
 }
 
-/**
- * @brief Each platform/adapter will override this with its own function
- */
+
 __attribute__((weak)) mrt_status_t mrt_gatt_notify_char_val(mrt_gatt_char_t* chr, uint8_t* data, uint16_t len)
 {
+    //The platform adapter must override this function
     return MRT_STATUS_NOT_IMPLEMENTED;
 }
 
@@ -296,6 +294,13 @@ __attribute__((weak)) mrt_status_t mrt_gatt_notify_char_val(mrt_gatt_char_t* chr
  */
 __attribute__((weak)) mrt_status_t mrt_gatt_get_char_val(mrt_gatt_char_t* chr)
 {
+    //The platform adapter must override this function
+    return MRT_STATUS_NOT_IMPLEMENTED;
+}
+
+__attribute__((weak)) mrt_status_t mrt_gatt_register_svc(mrt_gatt_svc_t* svc)
+{
+    //The platform adapter must override this function
     return MRT_STATUS_NOT_IMPLEMENTED;
 }
 

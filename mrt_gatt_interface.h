@@ -218,6 +218,7 @@ mrt_status_t mrt_gatt_add_svc(mrt_gatt_pro_t* pro, mrt_gatt_svc_t* svc );
  */
 mrt_status_t mrt_gatt_init_svc(mrt_gatt_svc_t* svc, uint8_t uuidLen, const uint8_t* arrUuid, uint16_t charCount, mrt_gatt_svc_callback cbEvent, const char* name);
 
+
 /**
  * @brief Initializes a characteristic and adds it to a service
  * @param chr - ptr to characteristic
@@ -330,6 +331,14 @@ mrt_status_t mrt_gatt_notify_char_val(mrt_gatt_char_t* chr, uint8_t* data, uint1
  * @return status
  */
 mrt_status_t mrt_gatt_get_char_val(mrt_gatt_char_t* chr);
+
+/**
+ * @brief Registers a service with the ble system 
+ * @param svc ptr to service
+ * @return mrt_status_t 
+ */
+mrt_status_t mrt_gatt_register_svc(mrt_gatt_svc_t* svc);
+
 
 #ifdef __cplusplus
 }
